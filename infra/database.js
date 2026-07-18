@@ -1,5 +1,4 @@
 import { Client } from "pg";
-import { config } from "dotenv";
 
 async function query(command) {
   const client = new Client({
