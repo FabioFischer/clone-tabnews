@@ -4,11 +4,11 @@
   "description": "Implementação do \"https://www.tabnews.com.br/\". Repositório de estudo para curso.dev",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev && npm run dev:psql:up",
+    "dev": "npm run services:up && next dev",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
-    "dev:psql:up": "docker compose -f infra/compose.yaml up -d",
-    "dev:psql:down": "docker compose -f infra/compose.yaml down",
+    "services:up": "docker compose -f infra/compose.yaml up -d",
+    "services:down": "docker compose -f infra/compose.yaml down",
     "test": "jest",
     "test:watch": "jest --watch"
   },
