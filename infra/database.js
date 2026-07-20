@@ -10,9 +10,12 @@ async function query(command) {
   });
   await client.connect();
 
-  const result = await client.query(command);
-
-  await client.end();
+  try {
+    const result = await client.query(command);
+  } catch (error) {
+  } finally {
+    await client.end();
+  }
 
   return result;
 }
