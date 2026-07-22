@@ -3,6 +3,7 @@ import { Pool } from "pg";
 async function query(command) {
   const pool = new Pool({
     connectionString: process.env.POSTGRES_URL,
+    ssl: process.env.NODE_ENV === "development" ? false : true,
   });
   var response;
 
