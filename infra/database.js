@@ -1,26 +1,20 @@
-import { Client } from "pg";
+import { Pool } from "pg";
 
 async function query(command) {
-  const client = new Client({
-    host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
-    database: process.env.POSTGRES_DB,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
+  const pool = new Pool({
+    connectionString: process.env.POSTGRES_URL,
   });
-
-  var result;
+  var response;
 
   try {
-    await client.connect();
-    result = await client.query(command);
+    response = await pool.query(command, null);
   } catch (error) {
-    console.error(error);
+    console.error("Database connection error:", error.stack);
   } finally {
-    await client.end();
+    await pool.end();
   }
 
-  return result;
+  return response;
 }
 
 export default {
