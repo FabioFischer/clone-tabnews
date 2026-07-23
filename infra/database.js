@@ -3,7 +3,7 @@ import { Pool } from "pg";
 async function query(command) {
   const pool = new Pool({
     connectionString: process.env.POSTGRES_URL,
-    ssl: process.env.NODE_ENV === "development" ? false : true,
+    ssl: getSSLValues(),
   });
   var response;
 
@@ -21,3 +21,12 @@ async function query(command) {
 export default {
   query: query,
 };
+
+function getSSLValues() {
+  if (process.env.POSTGRES_CA) {
+    return {
+      ca: process.env.POSTGRES_CA,
+    };
+  }
+  return process.env.NODE_ENV === "development" ? false : true;
+}
