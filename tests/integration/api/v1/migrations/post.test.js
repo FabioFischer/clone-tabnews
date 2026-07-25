@@ -6,7 +6,7 @@ test("POST to /api/v1/migrations should return 200", async () => {
       method: "POST",
     },
   );
-  expect(responseMigrations.status).toBe(200);
+  expect(responseMigrations.status).toBe(201);
 
   const responseMigrationsBody = await responseMigrations.json();
   expect(Array.isArray(responseMigrationsBody)).toBe(true);

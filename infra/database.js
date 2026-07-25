@@ -1,13 +1,11 @@
-import { Pool } from "pg";
+import { Pool, Client } from "pg";
 
 async function query(command) {
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: getSSLValues(),
-  });
+  let pool;
   var response;
 
   try {
+    pool = await getNewPool();
     response = await pool.query(command, null);
   } catch (error) {
     console.error("Database connection error:", error.stack);
@@ -18,8 +16,30 @@ async function query(command) {
   return response;
 }
 
+async function getNewClient() {
+  const client = new Client({
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    user: process.env.POSTGRES_USER,
+    database: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD,
+    ssl: getSSLValues(),
+  });
+  client.connect();
+  return client;
+}
+
+async function getNewPool() {
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: getSSLValues(),
+  });
+  return pool;
+}
+
 export default {
-  query: query,
+  query,
+  getNewClient,
 };
 
 function getSSLValues() {
