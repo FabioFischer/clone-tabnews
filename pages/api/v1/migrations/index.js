@@ -34,5 +34,6 @@ export default async function migrations(request, response) {
     }
   }
 
+  await dbClient.end();
   response.status(405).end(); // Method not allowed;
 }
